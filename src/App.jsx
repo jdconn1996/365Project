@@ -1,75 +1,49 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import React from 'react'
 import './App.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import MainCC from './maincc.jsx';
+
 
 function App() {
   const [count, setCount] = useState(0)
 
+  // Data sets (could later come from API/local storage)
+  const recentItems = [
+    { name: 'Pikachu', image: 'src/Pokémon_Pikachu_art.png', url: 'https://bulbapedia.bulbagarden.net/wiki/Pikachu_(Pok%C3%A9mon)' },
+    { name: 'Charmander', image: 'src/Pokémon_Pikachu_art.png', url: 'https://bulbapedia.bulbagarden.net/wiki/Pikachu_(Pok%C3%A9mon)' },
+    { name: 'Squirtle', image: 'src/Pokémon_Pikachu_art.png', url: 'https://bulbapedia.bulbagarden.net/wiki/Pikachu_(Pok%C3%A9mon)' }
+  ];
+
+  const suggestedItems = [
+    { name: 'Bulbasaur', image: 'src/Pokémon_Pikachu_art.png', url: 'https://bulbapedia.bulbagarden.net/wiki/Pikachu_(Pok%C3%A9mon)' },
+    { name: 'Eevee', image: 'src/Pokémon_Pikachu_art.png', url: 'https://bulbapedia.bulbagarden.net/wiki/Eevee_(Pok%C3%A9mon)' },
+    { name: 'Snorlax', image: 'src/Pokémon_Pikachu_art.png', url: 'https://bulbapedia.bulbagarden.net/wiki/Pikachu_(Pok%C3%A9mon)' }
+  ];
+
   return (
     <>
-      <div>
+      <div style={{width: "100%"}}>
         <div
-          style={{maxWidth: "1080px"}}
+          style={{width: "100%"}}
         >
-          <h1>Pokédex Mobile</h1>
+
             <div>
-              <input
+              <input className={"form-control"} style={{width: "60%", margin: "auto"}}
                 placeholder="Type Pokémon name"
               />
             </div>
-            <div>
-              <button>
-                ❤Favorites
+            <div style={{marginTop: "10px"}}>
+              <button className="btn btn-primary" style={{marginRight: "10px"}}>
+                ❤ Favorites
               </button>
-              <button>
+              <button className="btn btn-primary">
                 History
               </button>
             </div>
-            <h3>Recently viewed</h3>
-          <div class="container">
-            <div class="row">
-            <a href="https://bulbapedia.bulbagarden.net/wiki/Pikachu_(Pok%C3%A9mon)" class="btn btn-primary">
-            
-            <div className="card" style={{ width: "18rem" }}>
-           <img class="card-img-top" src="src/Pokémon_Pikachu_art.png" alt="Card image cap"></img>
-           <div class="card-body">
-           <h5 class="card-title">Pikachu</h5>
-           </div>
-            </div>
-            </a>
-            <a href="https://bulbapedia.bulbagarden.net/wiki/Pikachu_(Pok%C3%A9mon)" class="btn btn-primary">
-            
-            <div className="card" style={{ width: "18rem" }}>
-           <img class="card-img-top" src="src/Pokémon_Pikachu_art.png" alt="Card image cap"></img>
-           <div class="card-body">
-           <h5 class="card-title">Pikachu</h5>
-           </div>
-            </div>
-            </a>
-            </div>
-            </div>
-            <div>
-              {["Pokemon 1", "Pokemon 2", "Pokemon 3", "Pokemon 4"].map((name, pokemon) => (
-              <div key={pokemon}>
-                <div
-                    style={{ width: 50, height: 20 }}
-                ></div>
-                <text>{name}</text>
-              </div>
-              ))}
-            </div>
-            <h4>Suggested Pokémon</h4>
-            <div>
-              {["Pokemon 1", "Pokemon 2", "Pokemon 3", "Pokemon 4"].map((name, pokemon) => (
-              <div key={pokemon}>
-                <div
-                  style={{ height: 20 }}
-                ></div>
-                <text>{name}</text>
-              </div>
-              ))}
-            </div>
+            <MainCC title="Recently Viewed" items={recentItems}/>
+            <MainCC title="Suggested Pokémon" items={suggestedItems} />
         </div>
       </div>
     </>
