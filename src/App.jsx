@@ -22,6 +22,11 @@ function App() {
     { name: 'Snorlax', image: 'src/Pokémon_Pikachu_art.png', url: 'https://bulbapedia.bulbagarden.net/wiki/Pikachu_(Pok%C3%A9mon)' }
   ];
 
+  const bottomMenu = [
+    { name: 'Compare', image: 'src/Pokémon_Pikachu_art.png', url: 'https://bulbapedia.bulbagarden.net/wiki/Pikachu_(Pok%C3%A9mon)' },
+    { name: 'Battle Sim', image: 'src/Pokémon_Pikachu_art.png', url: 'https://bulbapedia.bulbagarden.net/wiki/Eevee_(Pok%C3%A9mon)' },
+    { name: 'Change Game', image: 'src/Pokémon_Pikachu_art.png', url: 'https://bulbapedia.bulbagarden.net/wiki/Pikachu_(Pok%C3%A9mon)' }
+  ];
   return (
     <>
       <div style={{width: "100%"}}>
@@ -44,6 +49,7 @@ function App() {
             </div>
             <MainCC title="Recently Viewed" items={recentItems}/>
             <MainCC title="Suggested Pokémon" items={suggestedItems} />
+            <MainCC title="Menu" items={bottomMenu} />
         </div>
       </div>
     </>
