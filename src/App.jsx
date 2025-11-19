@@ -8,6 +8,9 @@ function App() {
 
   return (
     
+    <div class="container py-4" style={{ width: '1000px', height: '1000px', backgroundColor: 'silver' }}>
+      <button type="button" class="btn btn-primary btn-lg btn-block">Search</button>
+
     <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
   
   <div class="carousel-inner">
@@ -61,7 +64,7 @@ function App() {
   </a>
 
 </div>
-
+</div>
       )
 }
 
