@@ -27,7 +27,28 @@ function App() {
               </button>
             </div>
             <h3>Recently viewed</h3>
-        
+          <div class="container">
+            <div class="row">
+            <a href="https://bulbapedia.bulbagarden.net/wiki/Pikachu_(Pok%C3%A9mon)" class="btn btn-primary">
+            
+            <div className="card" style={{ width: "18rem" }}>
+           <img class="card-img-top" src="src/Pokémon_Pikachu_art.png" alt="Card image cap"></img>
+           <div class="card-body">
+           <h5 class="card-title">Pikachu</h5>
+           </div>
+            </div>
+            </a>
+            <a href="https://bulbapedia.bulbagarden.net/wiki/Pikachu_(Pok%C3%A9mon)" class="btn btn-primary">
+            
+            <div className="card" style={{ width: "18rem" }}>
+           <img class="card-img-top" src="src/Pokémon_Pikachu_art.png" alt="Card image cap"></img>
+           <div class="card-body">
+           <h5 class="card-title">Pikachu</h5>
+           </div>
+            </div>
+            </a>
+            </div>
+            </div>
             <div>
               {["Pokemon 1", "Pokemon 2", "Pokemon 3", "Pokemon 4"].map((name, pokemon) => (
               <div key={pokemon}>
