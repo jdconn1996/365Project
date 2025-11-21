@@ -3,16 +3,47 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import Card from "./card.jsx";
 
-export default function Carousel({ items }) {  
+export default function Carousel({ items = [] }) {
+    // create slides of up to 3 items each
+    const chunkSize = 3;
+    const slides = [];
+    for (let i = 0; i < items.length; i += chunkSize) {
+        slides.push(items.slice(i, i + chunkSize));
+    }
+
+    // unique id per carousel instance using React.useId (call unconditionally)
+    const reactId = React.useId();
+    const carouselId = `carousel-${reactId}`;
+
     return (
-        <div className="container">
-            <div className="row">
-                {items.map((item, index) => (
-                    <div key={index} className="col">
-                            <Card name={item.name} image={item.image} url={item.url} />
+        <div id={carouselId} className="carousel slide" data-bs-ride="carousel">
+            <div className="carousel-inner">
+                {slides.map((chunk, slideIndex) => (
+                    <div key={slideIndex} className={"carousel-item" + (slideIndex === 0 ? " active" : "")}>
+                        <div className="row">
+                            {chunk.map((item, idx) => (
+                                <div key={`${slideIndex}-${idx}`} className="col-12 col-md-4 d-flex justify-content-center">
+                                    <Card name={item.name} image={item.image} url={item.url} />
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 ))}
             </div>
+
+            {/* Only show controls if there is more than one slide */}
+            {slides.length > 1 && (
+                <>
+                    <button className="carousel-control-prev" type="button" data-bs-target={`#${carouselId}`} data-bs-slide="prev">
+                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span className="visually-hidden">Previous</span>
+                    </button>
+                    <button className="carousel-control-next" type="button" data-bs-target={`#${carouselId}`} data-bs-slide="next">
+                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span className="visually-hidden">Next</span>
+                    </button>
+                </>
+            )}
         </div>
     );
 }
