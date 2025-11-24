@@ -35,6 +35,9 @@ function App() {
         >
 
             <div>
+              <button className="btn btn-primary">
+                Create Account!
+              </button>
               <input className={"form-control"} style={{width: "60%", margin: "1rem auto"}}
                 placeholder="Type Pokémon name"
               />
@@ -46,6 +49,7 @@ function App() {
               <button className="btn btn-primary">
                 History
               </button>
+              
             </div>
             <MainCC title="Recently Viewed" items={recentItems}/>
             <MainCC title="Suggested Pokémon" items={suggestedItems} />
