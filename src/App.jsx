@@ -1,9 +1,10 @@
 import React from 'react'
+
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import MainCC from './maincc.jsx';
-
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate, Navigate } from 'react-router-dom';
 
 function App() {
   // Data sets (could later come from API/local storage)
@@ -28,6 +29,7 @@ function App() {
     { name: 'Change Game', image: 'src/changegame.png', url: 'https://bulbapedia.bulbagarden.net/wiki/File:Pok%C3%A9mon_VG_logo.png' }
   ];
   return (
+    <Router>
     <>
       <div style={{width: "100%"}}>
         <div
@@ -57,6 +59,7 @@ function App() {
         </div>
       </div>
     </>
+    </Router>
   )
 }
 
