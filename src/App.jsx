@@ -6,8 +6,8 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import MainCC from './maincc.jsx';
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate, Navigate } from 'react-router-dom';
 
-function App() {
-  // Data sets (could later come from API/local storage)
+const HomePage = () => {
+  
   const recentItems = [
     { name: 'Pikachu', image: 'src/Pokémon_Pikachu_art.png', url: 'https://bulbapedia.bulbagarden.net/wiki/Pikachu_(Pok%C3%A9mon)' },
     { name: 'Charmander', image: 'src/Pokémon_Pikachu_art.png', url: 'https://bulbapedia.bulbagarden.net/wiki/Pikachu_(Pok%C3%A9mon)' },
@@ -29,7 +29,7 @@ function App() {
     { name: 'Change Game', image: 'src/changegame.png', url: 'https://bulbapedia.bulbagarden.net/wiki/File:Pok%C3%A9mon_VG_logo.png' }
   ];
   return (
-    <Router>
+    
     <>
       <div style={{width: "100%"}}>
         <div
@@ -59,8 +59,21 @@ function App() {
         </div>
       </div>
     </>
-    </Router>
+    
   )
+}
+
+
+function App() {
+  
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />}>
+        </Route>
+      </Routes>
+    </Router>
+  );
 }
 
 export default App
