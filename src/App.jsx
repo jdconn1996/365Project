@@ -23,9 +23,9 @@ function App() {
   ];
 
   const bottomMenu = [
-    { name: 'Compare', image: 'src/Pokémon_Pikachu_art.png', url: 'https://bulbapedia.bulbagarden.net/wiki/Pikachu_(Pok%C3%A9mon)' },
-    { name: 'Battle Sim', image: 'src/Pokémon_Pikachu_art.png', url: 'https://bulbapedia.bulbagarden.net/wiki/Eevee_(Pok%C3%A9mon)' },
-    { name: 'Change Game', image: 'src/Pokémon_Pikachu_art.png', url: 'https://bulbapedia.bulbagarden.net/wiki/Pikachu_(Pok%C3%A9mon)' }
+    { name: 'Compare', image: 'src/compare.png', url: 'https://bulbapedia.bulbagarden.net/wiki/File:JohtoSinnoh_BF.png' },
+    { name: 'Battle Sim', image: 'src/battlesim.png', url: 'https://bulbapedia.bulbagarden.net/wiki/File:EmeraldBFLogo.png' },
+    { name: 'Change Game', image: 'src/changegame.png', url: 'https://bulbapedia.bulbagarden.net/wiki/File:Pok%C3%A9mon_VG_logo.png' }
   ];
   return (
     <>
