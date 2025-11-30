@@ -16,7 +16,7 @@ export default function Carousel({ items = [] }) {
     const carouselId = `carousel-${reactId}`;
 
     return (
-        <div id={carouselId} className="carousel slide" data-bs-ride="carousel">
+        <div id={carouselId} className="carousel slide" data-bs-interval="false">
             <div className="carousel-inner">
                 {slides.map((chunk, slideIndex) => (
                     <div key={slideIndex} className={"carousel-item" + (slideIndex === 0 ? " active" : "")}>
