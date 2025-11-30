@@ -10,6 +10,8 @@ import Pokedex from './Pokedex.jsx';
 
 
 const HomePage = ({suggestedItems, recentItems}) => {
+    const navigate = useNavigate();
+    const [term, setTerm] = useState("");
 
 
 
@@ -18,60 +20,63 @@ const HomePage = ({suggestedItems, recentItems}) => {
     { name: 'Battle Sim', image: 'src/battlesim.png', url: 'https://bulbapedia.bulbagarden.net/wiki/File:EmeraldBFLogo.png' },
     { name: 'Change Game', image: 'src/changegame.png', url: 'https://bulbapedia.bulbagarden.net/wiki/File:Pok%C3%A9mon_VG_logo.png' }
   ];
+  const onSearch = () => {
+      if(!term) return;
+      navigate(`/pokedex?query=${encodeURIComponent(term)}`);
+  }
   return (
-    
-    <>
-      <div style={{width: "100%"}}>
-        <div
-          style={{width: "100%"}}
-        >
 
-            <div>
-              <button className="btn btn-primary">
-                Create Account!
-              </button>
-              <input className={"form-control"} style={{width: "60%", margin: "1rem auto"}}
-                placeholder="Type Pokémon name"
-              />
-            </div>
-            <div style={{marginTop: "10px"}}>
-              <button className="btn btn-primary" style={{marginRight: "10px"}}>
-                ❤ Favorites
-              </button>
-              <button className="btn btn-primary">
-                History
-              </button>
-              
-            </div>
-            <MainCC title="Recently Viewed" items={recentItems}/>
-            <MainCC title="Suggested Pokémon" items={suggestedItems} />
-            <IconNav items={bottomMenu}/>
-        </div>
-      </div>
-    </>
-    
+      <>
+          <div className="container-fluid text-start" style={{width: "100%"}}>
+              <div>
+
+                  <div className="d-flex align-items-center" style={{width: "60%", margin: "1rem auto", gap: '0.5rem'}}>
+                      <input
+                          className="form-control"
+                          placeholder="Type Pokémon name"
+                          value={term}
+                          onChange={(e) => setTerm(e.target.value)}
+                          onKeyDown={(e) => {
+                              if (e.key === 'Enter') onSearch();
+                          }}
+                      />
+                      <button className="btn btn-primary" onClick={onSearch}>Search</button>
+                  </div>
+              </div>
+
+              <div style={{marginTop: "10px", margin: "1rem auto", width: "60%"}}>
+                  <button className="btn btn-primary" style={{marginRight: "10px"}}>❤ Favorites</button>
+                  <button className="btn btn-primary">History</button>
+              </div>
+
+              <MainCC title="Recently Viewed" items={recentItems}/>
+              <MainCC title="Suggested Pokémon" items={suggestedItems}/>
+              <IconNav items={bottomMenu}/>
+          </div>
+      </>
+
   )
 }
 
-async function RandomPokemon(count){
+async function RandomPokemon(count) {
     const items = [];
     const maxId = 1010;
-    while(count < 12){
-            try{
-                const randomId = Math.floor(Math.random() * maxId) + 1;
-                const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${randomId}`);
-                if(!response.ok){
-                    console.log("Failed to fetch Pokémon data");
-                    count ++;
-                }
-                const data = await response.json();
-                const name = data.name.charAt(0).toUpperCase() + data.name.slice(1);
-                const image = data.sprites?.front_default || null;
-                const id = data.id;
-                items.push({name, image, id});
-            }catch(error){
-                console.error("Error fetching random Pokémon:", error);
+    while (count < 12) {
+        try {
+            const randomId = Math.floor(Math.random() * maxId) + 1;
+            const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${randomId}`);
+            if (!response.ok) {
+                console.log("Failed to fetch Pokémon data");
+                count++;
             }
+            const data = await response.json();
+            const name = data.name.charAt(0).toUpperCase() + data.name.slice(1);
+            const image = data.sprites?.front_default || null;
+            const id = data.id;
+            items.push({name, image, id});
+        } catch (error) {
+            console.error("Error fetching random Pokémon:", error);
+        }
 
 
         count++;
