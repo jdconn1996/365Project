@@ -4,20 +4,12 @@ import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import MainCC from './maincc.jsx';
-import { BrowserRouter as Router, Routes, Route, Link, useNavigate, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate} from 'react-router-dom';
 import IconNav from "./IconNav.jsx";
+import Pokedex from './Pokedex.jsx';
 
 
-const HomePage = ({suggestedItems}) => {
-
-  const recentItems = [
-    { name: 'Pikachu', image: 'src/Pokémon_Pikachu_art.png', url: 'https://bulbapedia.bulbagarden.net/wiki/Pikachu_(Pok%C3%A9mon)' },
-    { name: 'Charmander', image: 'src/Pokémon_Pikachu_art.png', url: 'https://bulbapedia.bulbagarden.net/wiki/Pikachu_(Pok%C3%A9mon)' },
-    { name: 'Squirtle', image: 'src/Pokémon_Pikachu_art.png', url: 'https://bulbapedia.bulbagarden.net/wiki/Pikachu_(Pok%C3%A9mon)' },
-      { name: 'Pikachu', image: 'src/Pokémon_Pikachu_art.png', url: 'https://bulbapedia.bulbagarden.net/wiki/Pikachu_(Pok%C3%A9mon)' },
-      { name: 'Charmander', image: 'src/Pokémon_Pikachu_art.png', url: 'https://bulbapedia.bulbagarden.net/wiki/Pikachu_(Pok%C3%A9mon)' },
-      { name: 'Squirtle', image: 'src/9millyBilly.jpeg', url: 'https://bulbapedia.bulbagarden.net/wiki/Pikachu_(Pok%C3%A9mon)' }
-  ];
+const HomePage = ({suggestedItems, recentItems}) => {
 
 
 
@@ -64,7 +56,7 @@ const HomePage = ({suggestedItems}) => {
 async function RandomPokemon(count){
     const items = [];
     const maxId = 1010;
-    while(count < 11){
+    while(count < 12){
             try{
                 const randomId = Math.floor(Math.random() * maxId) + 1;
                 const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${randomId}`);
@@ -92,6 +84,7 @@ async function RandomPokemon(count){
 function App() {
 
     const [suggestedItems, setSuggestedItems] = useState([]);
+    const [recentItems, setRecentItems] = useState([]);
 
 
     useEffect(() => {
@@ -99,9 +92,10 @@ function App() {
         const fetchData = async () => {
             try{
                 const items = await RandomPokemon(0);
-
+                const recent = await RandomPokemon(0);
 
                 if (mounted) setSuggestedItems(items);
+                if (mounted) setRecentItems(recent);
                 console.log("Suggested Items:", items);
             }catch(error){
                 console.error("Error fetching data:", error);
@@ -112,20 +106,10 @@ function App() {
     }, []);
 
   return (
-    <Router>
-      <div>
-        <nav>
-          <Link to="/">Home</Link>
-
-        </nav>
-      </div>
       <Routes>
-        <Route path="/" element={<HomePage suggestedItems={suggestedItems}/>}>
-        </Route>
-
-
+        <Route path="/" element={<HomePage suggestedItems={suggestedItems} recentItems={recentItems}/>}/>
+        <Route path="/pokedex" element={<Pokedex items={suggestedItems}/>}/>
       </Routes>
-    </Router>
   );
 }
 
