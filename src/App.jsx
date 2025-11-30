@@ -7,7 +7,7 @@ import MainCC from './maincc.jsx';
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate} from 'react-router-dom';
 import IconNav from "./IconNav.jsx";
 import Pokedex from './Pokedex.jsx';
-
+import Four from './Four.jsx';
 
 const HomePage = ({suggestedItems, recentItems}) => {
 
@@ -109,6 +109,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage suggestedItems={suggestedItems} recentItems={recentItems}/>}/>
         <Route path="/pokedex" element={<Pokedex items={suggestedItems}/>}/>
+        <Route path="/four" element={<Four />}/>
       </Routes>
   );
 }
