@@ -1,7 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import IconNav from "./IconNav.jsx";
+import PokemonInfo from "./PokedexInfo.jsx";
 
 export default function Pokedex({ items = [], onSelect }) {
+    const bottomMenu = [
+        { name: 'Compare', image: 'src/compare.png', url: 'https://bulbapedia.bulbagarden.net/wiki/File:JohtoSinnoh_BF.png' },
+        { name: 'Battle Sim', image: 'src/battlesim.png', url: 'https://bulbapedia.bulbagarden.net/wiki/File:EmeraldBFLogo.png' },
+        { name: 'Change Game', image: 'src/changegame.png', url: 'https://bulbapedia.bulbagarden.net/wiki/File:Pok%C3%A9mon_VG_logo.png' }
+    ];
     const location = useLocation();
     const navigate = useNavigate();
     const [searchResult, setSearchResult] = useState(null);
@@ -30,7 +39,11 @@ export default function Pokedex({ items = [], onSelect }) {
                 const image = data.sprites?.front_default || null;
                 const id = data.id;
                 const types = data.types?.map(t => t.type.name) || [];
-                const payload = { name, image, id, types };
+                const abilities = data.abilities?.map(a => a.ability.name) || [];
+                const height = data.height;
+                const weight = data.weight;
+                const stats = data.stats?.map(s => ({ name: s.stat.name, value: s.base_stat })) || [];
+                const payload = { name, image, id, types, abilities, height, weight, stats };
                 if (mounted) setSearchResult(payload);
             } catch (err) {
                 if (mounted) setError(err.message || 'Error fetching Pokémon');
@@ -44,52 +57,31 @@ export default function Pokedex({ items = [], onSelect }) {
 
     const handleSelect = (item) => {
         if (onSelect) onSelect(item);
-        // optionally navigate to detail: navigate(`/pokemon/${item.id}`);
     };
 
     return (
         <div className="container py-3">
-            <h2 className="mb-3">Pokedex</h2>
+            <h2 className="mb-5">Pokedex</h2>
 
             {loading && <div className="alert alert-info">Searching...</div>}
             {error && <div className="alert alert-danger">{error}</div>}
 
-            {searchResult && (
-                <div className="card mb-3" style={{ maxWidth: 480 }}>
-                    <div className="row g-0 align-items-center">
-                        <div className="col-4 text-center p-2">
-                            {searchResult.image ? (
-                                <img src={searchResult.image} alt={searchResult.name} className="img-fluid" />
-                            ) : (
-                                <div className="text-muted">No image</div>
-                            )}
-                        </div>
-                        <div className="col-8">
-                            <div className="card-body">
-                                <h5 className="card-title mb-1">{searchResult.name} <small className="text-muted">#{searchResult.id}</small></h5>
-                                <p className="card-text mb-2">
-                                    {searchResult.types && searchResult.types.length > 0 ? searchResult.types.join(", ") : "Type unknown"}
-                                </p>
-                                <div className="d-flex gap-2">
-                                    <button className="btn btn-sm btn-success" onClick={() => handleSelect(searchResult)}>Add / Select</button>
-                                    <button className="btn btn-sm btn-outline-secondary" onClick={() => navigate('/pokedex')}>Clear</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
+            {searchResult ? (
+                <PokemonInfo pokemon={searchResult} onSelect={handleSelect} onClear={() => navigate('/pokedex')}/>
+                ) : null
+            }
 
-            <div className="row">
+
+            <div className="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 g-3" style={{ marginBottom: 80, backgroundColor: "#3B4CCA", justifyContent: "center", borderRadius: "12px", padding: "15px", boxShadow: "2px 5px 7px" }}>
                 {items && items.length > 0 ? (
                     items.map((it) => (
-                        <div className="col-6 col-sm-4 col-md-3 mb-3" key={it.id}>
-                            <div className="card h-100">
+                        <div className="col-12 col-sm-6 col-md-4 col-lg-3 mb-3" key={it.id}>
+                            <div className="card h-100" style={{minHeight: 260, minWidth: 200, boxShadow: "2px 5px 7px"}}>
                                 <div className="text-center p-3">
                                     {it.image ? (
-                                        <img src={it.image} alt={it.name} style={{ height: 96 }} />
+                                        <img src={it.image} alt={it.name} className="img-fluid" style={{ maxHeight: 200, objectFit: 'contain' }} />
                                     ) : (
-                                        <div style={{ height: 96 }} className="d-flex align-items-center justify-content-center text-muted">
+                                        <div style={{ height: 200 }} className="d-flex align-items-center justify-content-center text-muted">
                                             No image
                                         </div>
                                     )}
@@ -112,6 +104,7 @@ export default function Pokedex({ items = [], onSelect }) {
                     </div>
                 )}
             </div>
+            <IconNav items={bottomMenu}/>
         </div>
     );
 }
