@@ -10,7 +10,7 @@ import PokemonInfo from "./PokedexInfo.jsx";
 
 
 
-export default function Compare({ items = [], onSelect }) {
+export default function Battle({ items = [], onSelect }) {
 
   const navigate = useNavigate();
       const [term, setTerm] = useState("");
@@ -28,9 +28,9 @@ export default function Compare({ items = [], onSelect }) {
       <>
           <div className="container-fluid text-start" style={{width: "100%"}}>
               <div>
-<h1>Compare Two Pokemon </h1>
-
+<h1>Battle Simulator </h1>
  <div className="d-flex align-items-center" style={{width: "60%", margin: "1rem auto", gap: '0.5rem'}}>
+                      
                       <input
                           className="form-control"
                           placeholder="Type Pokémon 1 name"
@@ -55,7 +55,7 @@ export default function Compare({ items = [], onSelect }) {
                       <button className="btn btn-primary" onClick={onSearch}>Search</button>
                   </div>
 
-                 
+                 <h3>Pokemon Health 1</h3>
               </div>
               <IconNav items={bottomMenu}/>
           </div>
