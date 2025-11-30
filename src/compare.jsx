@@ -1,25 +1,27 @@
-import React, {useEffect, useState} from 'react'
+import React from "react";
 
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import MainCC from './maincc.jsx';
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate, Navigate } from 'react-router-dom';
-import IconNav from "./IconNav.jsx";
 
-
-const HomePage = ({suggestedItems}) => {
-
+const compare = () => {
+  
   const recentItems = [
-    { name: 'Pikachu', image: 'src/Pokémon_Pikachu_art.png', url: 'https://bulbapedia.bulbagarden.net/wiki/Pikachu_(Pok%C3%A9mon)' },
+    { name: 'Pikachumew', image: 'src/Pokémon_Pikachu_art.png', url: 'https://bulbapedia.bulbagarden.net/wiki/Pikachu_(Pok%C3%A9mon)' },
     { name: 'Charmander', image: 'src/Pokémon_Pikachu_art.png', url: 'https://bulbapedia.bulbagarden.net/wiki/Pikachu_(Pok%C3%A9mon)' },
     { name: 'Squirtle', image: 'src/Pokémon_Pikachu_art.png', url: 'https://bulbapedia.bulbagarden.net/wiki/Pikachu_(Pok%C3%A9mon)' },
       { name: 'Pikachu', image: 'src/Pokémon_Pikachu_art.png', url: 'https://bulbapedia.bulbagarden.net/wiki/Pikachu_(Pok%C3%A9mon)' },
       { name: 'Charmander', image: 'src/Pokémon_Pikachu_art.png', url: 'https://bulbapedia.bulbagarden.net/wiki/Pikachu_(Pok%C3%A9mon)' },
       { name: 'Squirtle', image: 'src/9millyBilly.jpeg', url: 'https://bulbapedia.bulbagarden.net/wiki/Pikachu_(Pok%C3%A9mon)' }
+  ]; 
+
+  const suggestedItems = [
+    { name: 'Bulbasaur', image: 'src/Pokémon_Pikachu_art.png', url: 'https://bulbapedia.bulbagarden.net/wiki/Pikachu_(Pok%C3%A9mon)' },
+    { name: 'Eevee', image: 'src/Pokémon_Pikachu_art.png', url: 'https://bulbapedia.bulbagarden.net/wiki/Eevee_(Pok%C3%A9mon)' },
+    { name: 'Snorlax', image: 'src/Pokémon_Pikachu_art.png', url: 'https://bulbapedia.bulbagarden.net/wiki/Pikachu_(Pok%C3%A9mon)' }
   ];
-
-
 
   const bottomMenu = [
     { name: 'Compare', image: 'src/compare.png', url: 'https://bulbapedia.bulbagarden.net/wiki/File:JohtoSinnoh_BF.png' },
@@ -53,7 +55,7 @@ const HomePage = ({suggestedItems}) => {
             </div>
             <MainCC title="Recently Viewed" items={recentItems}/>
             <MainCC title="Suggested Pokémon" items={suggestedItems} />
-            <IconNav items={bottomMenu}/>
+            <MainCC title="Menu" items={bottomMenu} />
         </div>
       </div>
     </>
@@ -61,73 +63,4 @@ const HomePage = ({suggestedItems}) => {
   )
 }
 
-async function RandomPokemon(count){
-    const items = [];
-    const maxId = 1010;
-    while(count < 11){
-            try{
-                const randomId = Math.floor(Math.random() * maxId) + 1;
-                const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${randomId}`);
-                if(!response.ok){
-                    console.log("Failed to fetch Pokémon data");
-                    count ++;
-                }
-                const data = await response.json();
-                const name = data.name.charAt(0).toUpperCase() + data.name.slice(1);
-                const image = data.sprites?.front_default || null;
-                const id = data.id;
-                items.push({name, image, id});
-            }catch(error){
-                console.error("Error fetching random Pokémon:", error);
-            }
-
-
-        count++;
-    }
-    console.log(items);
-    return items;
-}
-
-
-function App() {
-
-    const [suggestedItems, setSuggestedItems] = useState([]);
-
-
-    useEffect(() => {
-        let mounted = true;
-        const fetchData = async () => {
-            try{
-                const items = await RandomPokemon(0);
-
-
-                if (mounted) setSuggestedItems(items);
-                console.log("Suggested Items:", items);
-            }catch(error){
-                console.error("Error fetching data:", error);
-            }
-        }
-        fetchData();
-        return () => { mounted = false; };
-    }, []);
-
-  return (
-    <Router>
-      <div>
-        <nav>
-          <Link to="/">Home</Link>
-
-        </nav>
-      </div>
-      <Routes>
-        <Route path="/" element={<HomePage suggestedItems={suggestedItems}/>}>
-        </Route>
-
-
-      </Routes>
-    </Router>
-  );
-}
-
-
-export default App;
+export default compare
