@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react'
-
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
@@ -114,7 +113,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage suggestedItems={suggestedItems} recentItems={recentItems}/>}/>
         <Route path="/pokedex" element={<Pokedex items={suggestedItems}/>}/>
-        <Route path="/four" element={<Four />}/>
+        <Route path="/404" element={<Four />}/>
       </Routes>
   );
 }

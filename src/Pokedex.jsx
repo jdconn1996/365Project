@@ -33,7 +33,12 @@ export default function Pokedex({ items = [], onSelect }) {
             setSearchResult(null);
             try {
                 const resp = await fetch(`https://pokeapi.co/api/v2/pokemon/${query.toLowerCase()}`);
-                if (!resp.ok) throw new Error('Pokémon not found');
+                if (!resp.ok){
+                    if(resp.status === 404){
+                        if (mounted) navigate('/404');
+                        return
+                    };
+                };
                 const data = await resp.json();
                 const name = data.name.charAt(0).toUpperCase() + data.name.slice(1);
                 const image = data.sprites?.front_default || null;
