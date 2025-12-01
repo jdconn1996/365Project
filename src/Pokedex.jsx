@@ -14,13 +14,28 @@ export default function Pokedex({ items = [], onSelect }) {
     const location = useLocation();
     const navigate = useNavigate();
     const [searchResult, setSearchResult] = useState(null);
+    const [selected, setSelected] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [saved, _setSaved] = useState(() => {
+        try {
+            const raw = localStorage.getItem('savedPokemon');
+            return raw ? JSON.parse(raw) : [];
+        } catch (err) {
+            console.log(err);
+            return [];
+        }
+    });
 
     const params = new URLSearchParams(location.search);
     const query = params.get('query') || '';
 
+
     useEffect(() => {
+        localStorage.setItem('savedPokemon', JSON.stringify(saved));
+    }, [saved]);
+    useEffect(() => {
+
         let mounted = true;
         const fetchPokemon = async () => {
             if (!query) {
@@ -40,15 +55,16 @@ export default function Pokedex({ items = [], onSelect }) {
                     };
                 };
                 const data = await resp.json();
-                const name = data.name.charAt(0).toUpperCase() + data.name.slice(1);
-                const image = data.sprites?.front_default || null;
-                const id = data.id;
-                const types = data.types?.map(t => t.type.name) || [];
-                const abilities = data.abilities?.map(a => a.ability.name) || [];
-                const height = data.height;
-                const weight = data.weight;
-                const stats = data.stats?.map(s => ({ name: s.stat.name, value: s.base_stat })) || [];
-                const payload = { name, image, id, types, abilities, height, weight, stats };
+                const payload = {
+                    name: data.name.charAt(0).toUpperCase() + data.name.slice(1),
+                    image: data.sprites?.front_default || null,
+                    id: data.id,
+                    types: data.types?.map(t => t.type.name) || [],
+                    abilities: data.abilities?.map(a => a.ability.name) || [],
+                    height: data.height,
+                    weight: data.weight,
+                    stats: data.stats?.map(s => ({ name: s.stat.name, value: s.base_stat })) || []
+                };
                 if (mounted) setSearchResult(payload);
             } catch (err) {
                 if (mounted) setError(err.message || 'Error fetching Pokémon');
@@ -58,12 +74,34 @@ export default function Pokedex({ items = [], onSelect }) {
         };
         fetchPokemon();
         return () => { mounted = false; };
-    }, [query]);
+    }, [query, navigate]);
 
-    const handleSelect = (item) => {
-        if (onSelect) onSelect(item);
+    const handleSelect = (pOrEvent) => {
+        // DOM event path (if someone used dataset)
+        if (pOrEvent && pOrEvent.currentTarget) {
+            const id = pOrEvent.currentTarget.dataset.value;
+            const found = items.find(i => String(i.id) === String(id));
+            if (found) setSelected(found);
+            if (onSelect) onSelect(found ?? id);
+            return;
+        }
+
+        // object path: full item passed directly
+        if (pOrEvent && typeof pOrEvent === 'object' && 'id' in pOrEvent) {
+            setSelected(pOrEvent);
+            if (onSelect) onSelect(pOrEvent);
+            return;
+        }
     };
 
+    const clearInfo = () => {
+        if (selected) {
+            setSelected(null);
+            return;
+        }
+        navigate('/pokedex');
+    };
+    console.log(activeSelect);
     return (
         <div className="container py-3">
             <h2 className="mb-5">Pokedex</h2>
@@ -71,8 +109,8 @@ export default function Pokedex({ items = [], onSelect }) {
             {loading && <div className="alert alert-info">Searching...</div>}
             {error && <div className="alert alert-danger">{error}</div>}
 
-            {searchResult ? (
-                <PokemonInfo pokemon={searchResult} onSelect={handleSelect} onClear={() => navigate('/pokedex')}/>
+            {(searchResult || selected) ? (
+                <PokemonInfo pokemon={searchResult ?? selected} onSelect={handleSelect} onClear={clearInfo} />
                 ) : null
             }
 
@@ -95,7 +133,7 @@ export default function Pokedex({ items = [], onSelect }) {
                                     <h6 className="card-title mb-1">{it.name}</h6>
                                     <p className="card-text mb-2"><small className="text-muted">#{it.id}</small></p>
                                     <div className="d-flex justify-content-center gap-2">
-                                        <button className="btn btn-sm btn-primary" onClick={() => handleSelect(it)}>
+                                        <button className="btn btn-sm btn-primary" data-value={it.id} onClick={() => handleSelect(it)}>
                                             Select
                                         </button>
                                     </div>
