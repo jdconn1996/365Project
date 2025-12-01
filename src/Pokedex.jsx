@@ -77,7 +77,7 @@ export default function Pokedex({ items = [], onSelect }) {
     }, [query, navigate]);
 
     const handleSelect = (pOrEvent) => {
-        // DOM event path (if someone used dataset)
+       
         if (pOrEvent && pOrEvent.currentTarget) {
             const id = pOrEvent.currentTarget.dataset.value;
             const found = items.find(i => String(i.id) === String(id));
@@ -86,7 +86,7 @@ export default function Pokedex({ items = [], onSelect }) {
             return;
         }
 
-        // object path: full item passed directly
+        
         if (pOrEvent && typeof pOrEvent === 'object' && 'id' in pOrEvent) {
             setSelected(pOrEvent);
             if (onSelect) onSelect(pOrEvent);

@@ -4,14 +4,14 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import Card from "./card.jsx";
 
 export default function Carousel({ items = [] }) {
-    // create slides of up to 3 items each
+    
     const chunkSize = 3;
     const slides = [];
     for (let i = 0; i < items.length; i += chunkSize) {
         slides.push(items.slice(i, i + chunkSize));
     }
 
-    // unique id per carousel instance using React.useId (call unconditionally)
+    
     const reactId = React.useId();
     const carouselId = `carousel-${reactId}`;
 
@@ -31,7 +31,7 @@ export default function Carousel({ items = [] }) {
                 ))}
             </div>
 
-            {/* Only show controls if there is more than one slide */}
+           
             {slides.length > 1 && (
                 <>
                     <button className="carousel-control-prev" type="button" data-bs-target={`#${carouselId}`} data-bs-slide="prev">
