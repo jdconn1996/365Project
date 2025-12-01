@@ -101,7 +101,7 @@ export default function Pokedex({ items = [], onSelect }) {
         }
         navigate('/pokedex');
     };
-    console.log(activeSelect);
+
     return (
         <div className="container py-3">
             <h2 className="mb-5">Pokedex</h2>
