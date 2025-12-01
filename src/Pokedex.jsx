@@ -76,21 +76,44 @@ export default function Pokedex({ items = [], onSelect }) {
         return () => { mounted = false; };
     }, [query, navigate]);
 
-    const handleSelect = (pOrEvent) => {
-       
-        if (pOrEvent && pOrEvent.currentTarget) {
-            const id = pOrEvent.currentTarget.dataset.value;
-            const found = items.find(i => String(i.id) === String(id));
-            if (found) setSelected(found);
-            if (onSelect) onSelect(found ?? id);
+    const handleSelect = async (p) => {
+        let name;
+
+        if(p && p.currentTarget){
+            name = p.currentTarget.dataset.value;
+        }else if(p && typeof p.currentTarget.dataset.value === 'object' && ('id' in p || 'name' in p)){
+            name = p.id ?? p.name
+        }else{
             return;
         }
-
-        
-        if (pOrEvent && typeof pOrEvent === 'object' && 'id' in pOrEvent) {
-            setSelected(pOrEvent);
-            if (onSelect) onSelect(pOrEvent);
-            return;
+        setLoading(true);
+        setError(null);
+        try{
+            const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${String(name).toLowerCase()}`)
+            if (!response.ok){
+                if(response.status === 404){
+                    navigate('/404');
+                    return;
+                }
+                throw new Error(`${response.status}`);
+            }
+            const data = await response.json();
+            const payload = {
+                name: data.name.charAt(0).toUpperCase() + data.name.slice(1),
+                image: data.sprites?.front_default || null,
+                id: data.id,
+                types: data.types?.map(t => t.type.name) || [],
+                abilities: data.abilities?.map(a => a.ability.name) || [],
+                height: data.height,
+                weight: data.weight,
+                stats: data.stats?.map(s => ({name: s.stat.name, value: s.base_stat})) || []
+            };
+            setSelected(payload);
+            if (onSelect) onSelect(payload);
+        }catch(error){
+            setError(error);
+        }finally{
+            setLoading(false);
         }
     };
 
@@ -110,7 +133,7 @@ export default function Pokedex({ items = [], onSelect }) {
             {error && <div className="alert alert-danger">{error}</div>}
 
             {(searchResult || selected) ? (
-                <PokemonInfo pokemon={searchResult ?? selected} onSelect={handleSelect} onClear={clearInfo} />
+                <PokemonInfo pokemon={selected ?? searchResult} onSelect={handleSelect} onClear={clearInfo} />
                 ) : null
             }
 
@@ -133,7 +156,7 @@ export default function Pokedex({ items = [], onSelect }) {
                                     <h6 className="card-title mb-1">{it.name}</h6>
                                     <p className="card-text mb-2"><small className="text-muted">#{it.id}</small></p>
                                     <div className="d-flex justify-content-center gap-2">
-                                        <button className="btn btn-sm btn-primary" data-value={it.id} onClick={() => handleSelect(it)}>
+                                        <button className="btn btn-sm btn-primary" data-value={it.id} onClick={(e) => handleSelect(e)}>
                                             Select
                                         </button>
                                     </div>
