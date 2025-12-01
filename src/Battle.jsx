@@ -26,7 +26,7 @@ export default function Battle({ items = [], onSelect }) {
   return (
 
       <>
-          <div className="container-fluid text-start" style={{width: "100%"}}>
+          <div className="container-fluid text-start" style={{width: "100%", height: "100vh"}}>
               <div>
 <h1>Battle Simulator </h1>
  <div className="d-flex align-items-center" style={{width: "60%", margin: "1rem auto", gap: '0.5rem'}}>

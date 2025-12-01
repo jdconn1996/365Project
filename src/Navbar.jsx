@@ -21,6 +21,12 @@ export default function Navbar() {
                             <li className="nav-item">
                                 <Link className="nav-link" to="/pokedex">Pokedex</Link>
                             </li>
+                            <li className="nav-item">
+                                <Link className="nav-link" to="/compare">Compare</Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link" to="/battle">Battle</Link>
+                            </li>
                         </ul>
                     </div>
                 </div>
