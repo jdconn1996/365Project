@@ -13,24 +13,101 @@ import PokemonInfo from "./PokedexInfo.jsx";
 export default function Battle({ items = [], onSelect }) {
 
   const navigate = useNavigate();
-      const [term, setTerm] = useState("");
+  const [term, setTerm] = useState("");
+  const [term2, setTerm2] = useState("");
   const bottomMenu = [
     { name: 'Compare', image: 'src/compare.png', url: 'https://bulbapedia.bulbagarden.net/wiki/File:JohtoSinnoh_BF.png' },
     { name: 'Battle Sim', image: 'src/battlesim.png', url: 'https://bulbapedia.bulbagarden.net/wiki/File:EmeraldBFLogo.png' },
     { name: 'Change Game', image: 'src/changegame.png', url: 'https://bulbapedia.bulbagarden.net/wiki/File:Pok%C3%A9mon_VG_logo.png' }
   ];
-  const onSearch = () => {
-      if(!term) return;
-      navigate(`/pokedex?query=${encodeURIComponent(term)}`);
-  }
+    
+    const [searchResult, setSearchResult] = useState(null);
+    const [searchResult2, setSearchResult2] = useState(null);
+
+    const [selected, setSelected] = useState(null);
+    const [selected2, setSelected2] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [saved, _setSaved] = useState(() => {
+        try {
+            const raw = localStorage.getItem('savedPokemon');
+            return raw ? JSON.parse(raw) : [];
+        } catch (err) {
+            console.log(err);
+            return [];
+        }
+    });
+
+    const params = new URLSearchParams(location.search);
+    
+    const query = params.get('query') || '';
+    const query2 = params.get('query2') || '';
+    useEffect(() => {
+        setTerm(query);
+        setTerm2(query2);
+    }, [query, query2]);
+   
+  
+    const fetchPokemon = async (query, setSearchResult) => {
+            if (!query) {
+                setSearchResult(null);
+                setError(null);
+                return;
+            }
+            setLoading(true);
+            setError(null);
+            setSearchResult(null);
+            try {
+                const resp = await fetch(`https://pokeapi.co/api/v2/pokemon/${query.toLowerCase()}`);
+                if (!resp.ok){
+                    if(resp.status === 404){
+                        if (mounted) navigate('/404');
+                        return
+                    };
+                };
+                const data = await resp.json();
+                const payload = {
+                    name: data.name.charAt(0).toUpperCase() + data.name.slice(1),
+                    image: data.sprites?.front_default || null,
+                    id: data.id,
+                    types: data.types?.map(t => t.type.name) || [],
+                    abilities: data.abilities?.map(a => a.ability.name) || [],
+                    height: data.height,
+                    weight: data.weight,
+                    stats: data.stats?.map(s => ({ name: s.stat.name, value: s.base_stat })) || []
+                };
+                console.log(payload)
+                const bst = payload.stats.reduce((statTotal, stat) =>statTotal + stat.value, 0 );
+                payload.baseStatTotal = bst;
+                setSearchResult(payload);
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        const onSearch = () => {
+            fetchPokemon(term, setSearchResult);
+            if(!term) return;
+            navigate(`/battle?query=${encodeURIComponent(term)}`);
+        };
+        const onSearch2 = () => {
+            fetchPokemon(term2, setSearchResult2);
+            if(!term2) return;
+            navigate(`/battle?query2=${encodeURIComponent(term2)}`);
+        };
+        
+        useEffect(() => {
+            if (query) fetchPokemon(query, setSearchResult);
+            if (query2) fetchPokemon(query2, searchResult2);
+        }, [query, query2]);
+
   return (
 
       <>
           <div className="container-fluid text-start" style={{width: "100%", height: "100vh"}}>
-              <div>
-<h1>Battle Simulator </h1>
- <div className="d-flex align-items-center" style={{width: "60%", margin: "1rem auto", gap: '0.5rem'}}>
-                      
+              <div className="container py-3">
+                <h2 className="mb-5">Battle</h2>
+
+                    <div className="d-flex align-items-center" style={{width: "60%", margin: "1rem auto", gap: '0.5rem'}}>
                       <input
                           className="form-control"
                           placeholder="Type Pokémon 1 name"
@@ -41,21 +118,64 @@ export default function Battle({ items = [], onSelect }) {
                           }}
                       />
                       <button className="btn btn-primary" onClick={onSearch}>Search</button>
-                  </div>
-<div className="d-flex align-items-center" style={{width: "60%", margin: "1rem auto", gap: '0.5rem'}}>
+                    </div>
+                    <div className="d-flex align-items-center" style={{width: "60%", margin: "1rem auto", gap: '0.5rem'}}>
                       <input
                           className="form-control"
                           placeholder="Type Pokémon 2 name"
-                          value={term}
-                          onChange={(e) => setTerm(e.target.value)}
+                          value={term2}
+                          onChange={(e) => setTerm2(e.target.value)}
                           onKeyDown={(e) => {
-                              if (e.key === 'Enter') onSearch();
+                              if (e.key === 'Enter') onSearch2();
                           }}
                       />
-                      <button className="btn btn-primary" onClick={onSearch}>Search</button>
-                  </div>
+                      <button className="btn btn-primary" onClick={onSearch2}>Search</button>
+                      
+                     </div>
+           
+            {error && <div className="alert alert-danger">{error}</div>}
+                 <div className='d-flex justify-content-around mt-4'>
+                    {searchResult &&(
+                        <div>
+                            <h4>{searchResult.name}</h4>
+                            <img src={searchResult.image} alt={searchResult.name} />
+                            <div> 
+                            
+                                <h5>Stats:</h5>
+                                <h6> Base Stat Total: {searchResult.baseStatTotal} </h6>
+                                <ul>
+                                    {searchResult.stats.map((stat)  => (
+                                        <li key={stat.name}>
+                                            {stat.name.charAt(0).toUpperCase()+stat.name.slice(1)}: {stat.value}
+                                        </li>
+                            ))} 
+                                </ul>
+                                
+                            </div>
+                        </div>
+                    )}
+                    {searchResult2 &&(
+                        <div>
+                            <h4>{searchResult2.name}</h4>
+                            <img src={searchResult2.image} alt={searchResult2.name} />
+                            <div> 
+                            
+                                <h5>Stats:</h5>
+                                <h6> Base Stat Total: {searchResult2.baseStatTotal} </h6>
+                                <ul>
+                                    {searchResult2.stats.map((stat)  => (
+                                        <li key={stat.name}>
+                                            {stat.name.charAt(0).toUpperCase()+stat.name.slice(1)}: {stat.value}
+                                        </li>
+                            ))} 
+                                </ul>
+                                
+                            </div>
+                        </div>
+                    )}
+                 </div>
 
-                 <h3>Pokemon Health 1</h3>
+
               </div>
               <IconNav items={bottomMenu}/>
           </div>

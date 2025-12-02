@@ -22,7 +22,10 @@ export default function Compare({ items = [], onSelect }) {
   ];
     
     const [searchResult, setSearchResult] = useState(null);
+    const [searchResult2, setSearchResult2] = useState(null);
+
     const [selected, setSelected] = useState(null);
+    const [selected2, setSelected2] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [saved, _setSaved] = useState(() => {
@@ -36,12 +39,16 @@ export default function Compare({ items = [], onSelect }) {
     });
 
     const params = new URLSearchParams(location.search);
+    
     const query = params.get('query') || '';
-
-
+    const query2 = params.get('query2') || '';
+    useEffect(() => {
+        setTerm(query);
+        setTerm2(query2);
+    }, [query, query2]);
    
-  const onSearch = () => {
-    const fetchPokemon = async () => {
+  
+    const fetchPokemon = async (query, setSearchResult) => {
             if (!query) {
                 setSearchResult(null);
                 setError(null);
@@ -70,23 +77,37 @@ export default function Compare({ items = [], onSelect }) {
                     stats: data.stats?.map(s => ({ name: s.stat.name, value: s.base_stat })) || []
                 };
                 console.log(payload)
+                const bst = payload.stats.reduce((statTotal, stat) =>statTotal + stat.value, 0 );
+                payload.baseStatTotal = bst;
                 setSearchResult(payload);
             } catch (err) {
                 console.log(err);
             }
         };
-        fetchPokemon();
-      if(!term) return;
-      navigate(`/compare?query=${encodeURIComponent(term)}`);
-  }
+        const onSearch = () => {
+            fetchPokemon(term, setSearchResult);
+            if(!term) return;
+            navigate(`/compare?query=${encodeURIComponent(term)}`);
+        };
+        const onSearch2 = () => {
+            fetchPokemon(term2, setSearchResult2);
+            if(!term2) return;
+            navigate(`/compare?query2=${encodeURIComponent(term2)}`);
+        };
+        
+        useEffect(() => {
+            if (query) fetchPokemon(query, setSearchResult);
+            if (query2) fetchPokemon(query2, searchResult2);
+        }, [query, query2]);
+
   return (
 
       <>
           <div className="container-fluid text-start" style={{width: "100%", height: "100vh"}}>
-              <div>
-<h1>Compare Two Pokemon </h1>
+              <div className="container py-3">
+                <h2 className="mb-5">Compare</h2>
 
- <div className="d-flex align-items-center" style={{width: "60%", margin: "1rem auto", gap: '0.5rem'}}>
+                    <div className="d-flex align-items-center" style={{width: "60%", margin: "1rem auto", gap: '0.5rem'}}>
                       <input
                           className="form-control"
                           placeholder="Type Pokémon 1 name"
@@ -97,21 +118,64 @@ export default function Compare({ items = [], onSelect }) {
                           }}
                       />
                       <button className="btn btn-primary" onClick={onSearch}>Search</button>
-                  </div>
-<div className="d-flex align-items-center" style={{width: "60%", margin: "1rem auto", gap: '0.5rem'}}>
+                    </div>
+                    <div className="d-flex align-items-center" style={{width: "60%", margin: "1rem auto", gap: '0.5rem'}}>
                       <input
                           className="form-control"
                           placeholder="Type Pokémon 2 name"
                           value={term2}
                           onChange={(e) => setTerm2(e.target.value)}
                           onKeyDown={(e) => {
-                              if (e.key === 'Enter') onSearch();
+                              if (e.key === 'Enter') onSearch2();
                           }}
                       />
-                      <button className="btn btn-primary" onClick={onSearch}>Search</button>
-                  </div>
+                      <button className="btn btn-primary" onClick={onSearch2}>Search</button>
+                      
+                     </div>
+            
+            {error && <div className="alert alert-danger">{error}</div>}
+                 <div className='d-flex justify-content-around mt-4'>
+                    {searchResult &&(
+                        <div>
+                            <h4>{searchResult.name}</h4>
+                            <img src={searchResult.image} alt={searchResult.name} />
+                            <div> 
+                            
+                                <h5>Stats:</h5>
+                                <h6> Base Stat Total: {searchResult.baseStatTotal} </h6>
+                                <ul>
+                                    {searchResult.stats.map((stat)  => (
+                                        <li key={stat.name}>
+                                            {stat.name.charAt(0).toUpperCase()+stat.name.slice(1)}: {stat.value}
+                                        </li>
+                            ))} 
+                                </ul>
+                                
+                            </div>
+                        </div>
+                    )}
+                    {searchResult2 &&(
+                        <div>
+                            <h4>{searchResult2.name}</h4>
+                            <img src={searchResult2.image} alt={searchResult2.name} />
+                            <div> 
+                            
+                                <h5>Stats:</h5>
+                                <h6> Base Stat Total: {searchResult2.baseStatTotal} </h6>
+                                <ul>
+                                    {searchResult2.stats.map((stat)  => (
+                                        <li key={stat.name}>
+                                            {stat.name.charAt(0).toUpperCase()+stat.name.slice(1)}: {stat.value}
+                                        </li>
+                            ))} 
+                                </ul>
+                                
+                            </div>
+                        </div>
+                    )}
+                 </div>
 
-                 
+
               </div>
               <IconNav items={bottomMenu}/>
           </div>
