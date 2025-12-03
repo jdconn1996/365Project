@@ -50,6 +50,13 @@ export default function Battle({ items = [], onSelect }) {
 
     const [firstPokemon, setfirstPokemon] = useState(null);
 
+    
+    const [whosAttacking, setwhosAttacking] = useState(null);
+    
+    const [greaterAttack1, setgreaterAttack1] = useState(null);
+    const [greaterAttack2, setgreaterAttack2] = useState(null);
+    const [winner, setWinner] = useState(null);
+
     const [readybutton, setReadyButton] = useState(null);
     const [settbutton, setSettButton] = useState(null);
     const [fightbutton, setFightButton] = useState(null);
@@ -163,6 +170,8 @@ export default function Battle({ items = [], onSelect }) {
             damageFormulaAttack3();
             damageFormulaAttack4();
             whosFirst();
+            isgreaterAttack1();
+            isgreaterAttack2();
             console.log("fighting pokemon");
             console.log("hp1 "+hp1);
             console.log("hp2 "+hp2);
@@ -181,6 +190,7 @@ export default function Battle({ items = [], onSelect }) {
             console.log("attack formula3 is "+AttackFormula3);
             
             console.log("attack formula4 is "+AttackFormula4);
+            console.log("First turn goes to "+whosAttacking);
         };
         
         const decleft = () => {
@@ -229,13 +239,77 @@ export default function Battle({ items = [], onSelect }) {
             }
            if (spe1 > spe2 ){
                 console.log("One is faster");
+                setwhosAttacking(1);
             }
             else if (spe2 > spe1 ){
                 console.log("Two is faster");
+                setwhosAttacking(2);
             }
             else if (spe1 === spe2){
                 console.log("Same pokemon, simulator pointless")
+                setwhosAttacking(1);
             }
+        };
+        const isgreaterAttack1 = () => {
+            if (at1 > spattack1)
+                {
+                    setgreaterAttack1(2);
+                }
+            else if (spattack1 > at1)
+            {
+                setgreaterAttack1(3);
+            }
+            else if (spattack1 === at1) 
+                {
+                    setgreaterAttack1(2);
+            } 
+        }
+
+        const isgreaterAttack2 = () => {
+            if (at2 > spattack2)
+                {
+                    setgreaterAttack2(2);
+                }
+            else if (spattack2 > at2)
+            {
+                setgreaterAttack2(3);
+            }
+            else if (spattack2 === at2) 
+                {
+                    setgreaterAttack2(2);
+            } 
+        }
+
+        const attacking = () => {
+            if (hp2<1){
+                setWinner(3);
+            }
+            if (hp1<1){
+                setWinner(4);
+            }
+            if (whosAttacking === 1){
+                if (greaterAttack1 === 2){
+                    sethp2 (hp2-AttackFormula1);
+                    setwhosAttacking (2);
+                }
+                else if (greaterAttack1 === 3){
+                    sethp2 (hp2-AttackFormula3);
+                    setwhosAttacking (2);
+                }
+            }
+
+             if (whosAttacking === 2){
+                if (greaterAttack2 === 2){
+                    sethp1 (hp1-AttackFormula2);
+                    setwhosAttacking (1);
+                }
+                else if (greaterAttack2 === 3){
+                    sethp1 (hp1-AttackFormula4);
+                    setwhosAttacking (1);
+                }
+            }
+            
+
         };
 
   return (
@@ -270,7 +344,20 @@ export default function Battle({ items = [], onSelect }) {
                       <button className="btn btn-primary" onClick={onSearch2}>Search</button>
                       
                      </div>
-                     
+                          {(winner===3) &&(
+                        <div className="d-flex align-items-center" style={{width: "60%", margin: "1rem auto", gap: '0.5rem'}}>
+                            <h1>{searchResult.name} IS THE WINNER!</h1>
+                            <img src={searchResult.image} alt={searchResult.name} />
+                            
+                        </div>
+                    )}
+                    {(winner===4) &&(
+                        <div className="d-flex align-items-center" style={{width: "60%", margin: "1rem auto", gap: '0.5rem'}}>
+                            <h1>{searchResult2.name} IS THE WINNER!</h1>
+                            <img src={searchResult2.image} alt={searchResult2.name} />
+                            
+                        </div>
+                    )}
                           {searchResult2 && searchResult &&(
                         <div className="d-flex align-items-center" style={{width: "10%", margin: "1rem auto", gap: '0.5rem'}}>
  
@@ -280,6 +367,7 @@ export default function Battle({ items = [], onSelect }) {
                             
                                 <button className="btn btn-primary" onClick={fight}>FIGHT!</button>
                                 <h6>please click 3 times</h6>
+                                <button className="btn btn-primary" onClick={attacking}>Attack</button>
                                 
                                
                                 
