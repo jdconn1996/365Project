@@ -1,6 +1,6 @@
 
  import React, {useEffect, useState} from 'react'
-import './App.css'
+import './compare.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import MainCC from './maincc.jsx';
@@ -156,14 +156,49 @@ export default function Compare({ items = [], onSelect }) {
                             
                                 <h5>Stats:</h5>
                                 <h6> Base Stat Total: {searchResult.baseStatTotal} </h6>
+                                  <div className='bst-bar-container'style={{width :`${searchResult.baseStatTotal/3}%`}}>
+                                    <div className='bst-fill' >
+
+                                    </div>
+                                </div>
                                 <h5>At Level 100:</h5>
 
                                 <h6>Hp is: {searchResult.hitpoints} </h6>
+                                <div className='hp-bar-container'style={{width :`${searchResult.hitpoints/3}%`}}>
+                                    <div className='hp-fill' >
+
+                                    </div>
+                                </div>
                                 <h6>Attack is: {searchResult.attack}</h6>
+                                <div className='at-bar-container'style={{width :`${searchResult.attack/3}%`}}>
+                                    <div className='at-fill' >
+
+                                    </div>
+                                </div>
                                 <h6>Defense is: {searchResult.defense}</h6>
+                                <div className='df-bar-container'style={{width :`${searchResult.defense/3}%`}}>
+                                    <div className='df-fill' >
+
+                                    </div>
+                                </div>
                                 <h6>Special Attack is: {searchResult.specialAttack} </h6>
+                                        <div className='speciala-bar-container'style={{width :`${searchResult.specialAttack/3}%`}}>
+                                    <div className='speciala-fill' >
+
+                                    </div>
+                                </div>
                                 <h6>Special Defense is: {searchResult.specialDefense}</h6>
+                                <div className='speciald-bar-container'style={{width :`${searchResult.specialDefense/3}%`}}>
+                                    <div className='speciald-fill' >
+
+                                    </div>
+                                </div>
                                 <h6>Speed is: {searchResult.speed}</h6>
+                                <div className='speed-bar-container'style={{width :`${searchResult.speed/3}%`}}>
+                                    <div className='speed-fill' >
+
+                                    </div>
+                                </div>
                                 <h6>Base Stats are:</h6>
                                 
                                 <ul>
@@ -185,14 +220,49 @@ export default function Compare({ items = [], onSelect }) {
                             
                                 <h5>Stats:</h5>
                                 <h6> Base Stat Total: {searchResult2.baseStatTotal} </h6>
+                                <div className='bst-bar-container'style={{width :`${searchResult2.baseStatTotal/3}%`}}>
+                                    <div className='bst-fill' >
+
+                                    </div>
+                                </div>
                                 <h5>At Level 100:</h5>
                                 
                                 <h6>Hp is: {searchResult2.hitpoints} </h6>
+                                <div className='hp-bar-container'style={{width :`${searchResult2.hitpoints/3}%`}}>
+                                    <div className='hp-fill' >
+
+                                    </div>
+                                </div>
                                 <h6>Attack is: {searchResult2.attack}</h6>
+                                <div className='at-bar-container'style={{width :`${searchResult2.attack/3}%`}}>
+                                    <div className='at-fill' >
+
+                                    </div>
+                                </div>
                                 <h6>Defense is: {searchResult2.defense}</h6>
+                                <div className='df-bar-container'style={{width :`${searchResult2.defense/3}%`}}>
+                                    <div className='df-fill' >
+
+                                    </div>
+                                </div>
                                 <h6>Special Attack is: {searchResult2.specialAttack} </h6>
+                                <div className='speciala-bar-container'style={{width :`${searchResult2.specialAttack/3}%`}}>
+                                    <div className='speciala-fill' >
+
+                                    </div>
+                                </div>
                                 <h6>Special Defense is: {searchResult2.specialDefense}</h6>
+                                <div className='speciald-bar-container'style={{width :`${searchResult2.specialDefense/3}%`}}>
+                                    <div className='speciald-fill' >
+
+                                    </div>
+                                </div>
                                 <h6>Speed is: {searchResult2.speed}</h6>
+                                <div className='speed-bar-container'style={{width :`${searchResult2.speed/3}%`}}>
+                                    <div className='speed-fill' >
+
+                                    </div>
+                                </div>
                                 <h6>Base Stats are:</h6>
                                 
                                 <ul>
