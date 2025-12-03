@@ -79,6 +79,18 @@ export default function Battle({ items = [], onSelect }) {
                 console.log(payload)
                 const bst = payload.stats.reduce((statTotal, stat) =>statTotal + stat.value, 0 );
                 payload.baseStatTotal = bst;
+                const hp = payload.stats.find(stat => stat.name === 'hp')?.value;
+                payload.hitpoints = ((hp*2)+110);
+                const att = payload.stats.find(stat => stat.name === 'attack')?.value;
+                payload.attack = ((att*2)+5);
+                const def = payload.stats.find(stat => stat.name === 'defense')?.value;
+                payload.defense = ((def*2)+5)
+                const sat = payload.stats.find(stat => stat.name === 'special-attack')?.value;
+                payload.specialAttack = ((sat*2)+5);
+                const sdef = payload.stats.find(stat => stat.name === 'special-defense')?.value;
+                payload.specialDefense = ((sdef*2)+5)
+                const spd = payload.stats.find(stat => stat.name === 'speed')?.value;
+                payload.speed = ((spd*2)+5)
                 setSearchResult(payload);
             } catch (err) {
                 console.log(err);
@@ -88,6 +100,7 @@ export default function Battle({ items = [], onSelect }) {
             fetchPokemon(term, setSearchResult);
             if(!term) return;
             navigate(`/battle?query=${encodeURIComponent(term)}`);
+            
         };
         const onSearch2 = () => {
             fetchPokemon(term2, setSearchResult2);
@@ -143,6 +156,16 @@ export default function Battle({ items = [], onSelect }) {
                             
                                 <h5>Stats:</h5>
                                 <h6> Base Stat Total: {searchResult.baseStatTotal} </h6>
+                                <h5>At Level 100:</h5>
+
+                                <h6>Hp is: {searchResult.hitpoints} </h6>
+                                <h6>Attack is: {searchResult.attack}</h6>
+                                <h6>Defense is: {searchResult.defense}</h6>
+                                <h6>Special Attack is: {searchResult.specialAttack} </h6>
+                                <h6>Special Defense is: {searchResult.specialDefense}</h6>
+                                <h6>Speed is: {searchResult.speed}</h6>
+                                <h6>Base Stats are:</h6>
+                                
                                 <ul>
                                     {searchResult.stats.map((stat)  => (
                                         <li key={stat.name}>
@@ -162,6 +185,16 @@ export default function Battle({ items = [], onSelect }) {
                             
                                 <h5>Stats:</h5>
                                 <h6> Base Stat Total: {searchResult2.baseStatTotal} </h6>
+                                <h5>At Level 100:</h5>
+                                
+                                <h6>Hp is: {searchResult2.hitpoints} </h6>
+                                <h6>Attack is: {searchResult2.attack}</h6>
+                                <h6>Defense is: {searchResult2.defense}</h6>
+                                <h6>Special Attack is: {searchResult2.specialAttack} </h6>
+                                <h6>Special Defense is: {searchResult2.specialDefense}</h6>
+                                <h6>Speed is: {searchResult2.speed}</h6>
+                                <h6>Base Stats are:</h6>
+                                
                                 <ul>
                                     {searchResult2.stats.map((stat)  => (
                                         <li key={stat.name}>
