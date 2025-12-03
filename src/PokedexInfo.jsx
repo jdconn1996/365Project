@@ -1,9 +1,16 @@
 import React from 'react';
+import {useStorage} from './StorageContext.jsx'
 
 export default function PokemonInfo({ pokemon, onSelect, onClear }) {
     if (!pokemon) return null;
 
+    const {addToSaved} = useStorage();
     const { name, id, image, types = [], abilities = [], height, weight, stats = [] } = pokemon;
+
+    const handleAdd = () => {
+        addToSaved && addToSaved(pokemon);
+        onSelect && onSelect(pokemon);
+    }
 
     return (
         <div className="card mb-5 w-100" style={{margin: "auto", padding: "10px", boxShadow: "2px 5px 7px"}}>
@@ -37,7 +44,7 @@ export default function PokemonInfo({ pokemon, onSelect, onClear }) {
                         )}
 
                         <div className="d-flex gap-2">
-                            <button className="btn btn-sm btn-success" onClick={() => onSelect && onSelect(pokemon)}>Add / Select</button>
+                            <button className="btn btn-sm btn-success" onClick={handleAdd}>Add</button>
                             <button className="btn btn-sm btn-outline-secondary" onClick={() => onClear && onClear()}>Clear</button>
                         </div>
                     </div>

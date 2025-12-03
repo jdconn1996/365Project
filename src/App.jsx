@@ -9,6 +9,7 @@ import Pokedex from './Pokedex.jsx';
 import Compare from './Compare.jsx';
 import Battle from './Battle.jsx';
 import History from './History.jsx';
+import Favorites from './Favorites.jsx';
 import Four from './Four.jsx';
 
 const HomePage = ({suggestedItems, recentItems}) => {
@@ -18,9 +19,8 @@ const HomePage = ({suggestedItems, recentItems}) => {
 
 
   const bottomMenu = [
-    { name: 'Compare', image: 'src/compare.png', url: 'https://bulbapedia.bulbagarden.net/wiki/File:JohtoSinnoh_BF.png' },
-    { name: 'Battle Sim', image: 'src/battlesim.png', url: 'https://bulbapedia.bulbagarden.net/wiki/File:EmeraldBFLogo.png' },
-    { name: 'Change Game', image: 'src/changegame.png', url: 'https://bulbapedia.bulbagarden.net/wiki/File:Pok%C3%A9mon_VG_logo.png' }
+    { name: 'Compare', image: 'src/compare.png', link: '/compare' },
+    { name: 'Battle Sim', image: 'src/battlesim.png', link: '/battle'},
   ];
   const onSearch = () => {
       if(!term) return;
@@ -47,7 +47,7 @@ const HomePage = ({suggestedItems, recentItems}) => {
               </div>
 
               <div style={{marginTop: "10px", margin: "1rem auto", width: "60%"}}>
-                  <button className="btn btn-primary" style={{marginRight: "10px"}}>❤ Favorites</button>
+                  <Link className="btn btn-primary" to="/favorites" style={{marginRight: "10px"}}>❤ Favorites</Link>
                   <Link className="btn btn-primary" to="/history">History</Link>
               </div>
 
@@ -118,7 +118,8 @@ function App() {
         <Route path="/pokedex" element={<Pokedex items={suggestedItems}/>}/>
         <Route path="/compare" element={<Compare />}/>
         <Route path="/battle" element={<Battle />}/>
-        <Route path="/history" element={<History/> }/>
+        <Route path="/history" element={<History /> }/>
+        <Route path="/favorites" element={<Favorites />}/>
         <Route path="/404" element={<Four />}/>
       </Routes>
   );
