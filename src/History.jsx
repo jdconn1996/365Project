@@ -9,11 +9,11 @@ export default function History({ fallbackItems = null }) {
     const items = (history && history.length > 0) ? history : (fallbackItems ?? []);
 
     return (
-        <div>
-            <div className="d-flex justify-content-between align-items-center mb-2">
-                <h3>History</h3>
+        <div style={{height: '100vh', width: '80%', margin: 'auto', textAlign: 'center'}}>
+            <div className="d-flex justify-content-between align-items-center mb-2" style={{backgroundColor: "#3B4CCA", padding: '10px', borderRadius: '12px', boxShadow: "2px 5px 7px black"}}>
+                <h3 style={{color: 'white'}}>History</h3>
                 <button
-                    className="btn btn-sm btn-outline-danger"
+                    className="btn btn-sm btn-danger"
                     onClick={clearHistory}
                     disabled={!history || history.length === 0}
                 >
@@ -32,8 +32,8 @@ export default function History({ fallbackItems = null }) {
             <div className="row g-2">
                 {items.length === 0 && <div className="text-muted">No history yet.</div>}
                 {items.map(it => (
-                    <div key={String(it.id ?? it.name)} className="col-12 col-sm-6 col-md-4">
-                        <div className="card p-2 d-flex align-items-center">
+                    <div key={String(it.id ?? it.name)} className="col-12 col-sm-6 col-md-4" style={{backgroundColor: '#3B4CCA', width: '100%', padding: '10px', margin: 'auto', marginTop: '30px', borderRadius: '12px', boxShadow: "2px 5px 7px black"}}>
+                        <div className="card p-2 d-flex align-items-center" style={{width:'80%', margin: 'auto' }}>
                             <div className="d-flex align-items-center w-100">
                                 {it.image ? (
                                     <img src={it.image} alt={it.name} style={{ width: 48, height: 48, objectFit: 'contain', marginRight: 8 }} />

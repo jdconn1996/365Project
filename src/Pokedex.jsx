@@ -131,7 +131,7 @@ export default function Pokedex({ items = [], onSelect }) {
                 <PokemonInfo
                     pokemon={selected ?? searchResult}
                     onSelect={(p) => { onSelect && onSelect(p); }}
-                    onClear={() => { if (selected) setSelected(null); }}
+                    onClear={ clearInfo }
                 />
             ) : null}
 

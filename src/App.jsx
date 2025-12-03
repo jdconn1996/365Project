@@ -8,6 +8,7 @@ import IconNav from "./IconNav.jsx";
 import Pokedex from './Pokedex.jsx';
 import Compare from './Compare.jsx';
 import Battle from './Battle.jsx';
+import History from './History.jsx';
 import Four from './Four.jsx';
 
 const HomePage = ({suggestedItems, recentItems}) => {
@@ -47,7 +48,7 @@ const HomePage = ({suggestedItems, recentItems}) => {
 
               <div style={{marginTop: "10px", margin: "1rem auto", width: "60%"}}>
                   <button className="btn btn-primary" style={{marginRight: "10px"}}>❤ Favorites</button>
-                  <button className="btn btn-primary">History</button>
+                  <Link className="btn btn-primary" to="/history">History</Link>
               </div>
 
               <MainCC title="Recently Viewed" items={recentItems}/>
@@ -117,6 +118,7 @@ function App() {
         <Route path="/pokedex" element={<Pokedex items={suggestedItems}/>}/>
         <Route path="/compare" element={<Compare />}/>
         <Route path="/battle" element={<Battle />}/>
+        <Route path="/history" element={<History/> }/>
         <Route path="/404" element={<Four />}/>
       </Routes>
   );

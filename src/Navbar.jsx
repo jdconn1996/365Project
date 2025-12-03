@@ -22,10 +22,10 @@ export default function Navbar() {
                                 <Link className="nav-link" to="/pokedex" style={{color: "white"}}>Pokedex</Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" to="/compare">Compare</Link>
+                                <Link className="nav-link" to="/compare" style={{color: 'white'}}>Compare</Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" to="/battle">Battle</Link>
+                                <Link className="nav-link" to="/battle" style={{color: 'white'}}>Battle</Link>
                             </li>
                         </ul>
                     </div>
