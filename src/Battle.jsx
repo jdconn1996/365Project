@@ -1,5 +1,6 @@
 
  import React, {useEffect, useState} from 'react'
+ import './battle.css'
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
@@ -24,8 +25,37 @@ export default function Battle({ items = [], onSelect }) {
     const [searchResult, setSearchResult] = useState(null);
     const [searchResult2, setSearchResult2] = useState(null);
     const [fighting, setFighting] = useState(null);
-    const [hp1, sethp1] = useState(null);
-    const [hp2, sethp2] = useState(null);
+    const [hp1, sethp1] = useState(-1);
+    const [hp2, sethp2] = useState(-2);
+    
+    const [at1, setat1] = useState(null);
+    const [at2, setat2] = useState(null);
+    const [de1, setde1] = useState(null);
+    const [de2, setde2] = useState(null);
+
+    const [spattack1, setspattack1] = useState(null);
+    const [spattack2, setspattack2] = useState(null);
+    const [spdefense1, setspdefense1] = useState(null);
+    const [spdefense2, setspdefense2] = useState(null);
+
+    
+    const [spe1, setspe1] = useState(null);
+    const [spe2, setspe2] = useState(null);
+
+    const [AttackFormula1, setAttackFormula1] = useState(null);
+    const [AttackFormula2, setAttackFormula2] = useState(null);
+    const [AttackFormula3, setAttackFormula3] = useState(null);
+    
+    const [AttackFormula4, setAttackFormula4] = useState(null);
+
+    const [firstPokemon, setfirstPokemon] = useState(null);
+
+    const [readybutton, setReadyButton] = useState(null);
+    const [settbutton, setSettButton] = useState(null);
+    const [fightbutton, setFightButton] = useState(null);
+    const [turnbutton, setTurnButton] = useState(null);
+    
+
     const [selected, setSelected] = useState(null);
     const [selected2, setSelected2] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -115,20 +145,99 @@ export default function Battle({ items = [], onSelect }) {
             if (query2) fetchPokemon(query2, searchResult2);
         }, [query, query2]);
 
-        const fight = (searchResult, searchResult2) => {
-            if (searchResult.attack>searchResult2.attack){
-                <h1>{searchResult.name}Wins!</h1>
+        const fight = () => {
+            sethp1 (searchResult.hitpoints);
+            sethp2 (searchResult2.hitpoints);
+            setat1 (searchResult.attack);
+            setat2 (searchResult2.attack);
+            setde1 (searchResult.defense);
+            setde2 (searchResult2.defense);
+            setspattack1 (searchResult.specialAttack);
+            setspattack2 (searchResult2.specialAttack);
+            setspdefense1 (searchResult.specialDefense);
+            setspdefense2 (searchResult2.specialDefense);
+            setspe1 (searchResult.speed);
+            setspe2 (searchResult2.speed);
+            damageFormulaAttack1();
+            damageFormulaAttack2();
+            damageFormulaAttack3();
+            damageFormulaAttack4();
+            whosFirst();
+            console.log("fighting pokemon");
+            console.log("hp1 "+hp1);
+            console.log("hp2 "+hp2);
+            console.log("at1 "+at1);
+            console.log("at2 "+at2);
+            console.log("de1 "+de1);
+            console.log("de2 "+de2);
+            console.log("spattack1 "+spattack1);
+            console.log("spattac2 "+spattack2);
+            console.log("sdf1 "+spdefense1);
+            console.log("sdf2 "+spdefense2);
+            console.log("spe1 "+spe1);
+            console.log("spe2 "+spe2);
+            console.log("attack formula1 is "+AttackFormula1);
+            console.log("attack formula2 is "+AttackFormula2);
+            console.log("attack formula3 is "+AttackFormula3);
+            
+            console.log("attack formula4 is "+AttackFormula4);
+        };
+        
+        const decleft = () => {
+            sethp1 (hp1-100);
+        };
+        const decright = () => {
+            sethp2 (hp2-100);
+        };
+
+        const damageFormulaAttack1 = () => {
+            if (at1 === null || de2 === null){
+                console.log("null stats detected");
+                return;
             }
-            else if (searchResult.attack < searchResult2.attack){
-                <h1>{searchResult2.name}Wins!</h1>
+           const damage = ((((((100 * 2 / 5) + 2) * 70 * at1 / 50) / de2 )  + 2)  * 90 / 100);
+            setAttackFormula1(damage);
+        };
+        const damageFormulaAttack2 = () => {
+            if (at2 === null || de1 === null){
+                console.log("null stats detected");
+                return;
             }
-            else if (searchResult.attack === searchResult2.attack){
-                <h1>Tie!</h1>
+           const damage1 = ((((((100 * 2 / 5) + 2) * 70 * at2 / 50) / de1 )  + 2)  * 90 / 100);
+            setAttackFormula2(damage1);
+        };
+        const damageFormulaAttack3 = () => {
+            if (spattack1 === null || spdefense2 === null){
+                console.log("null stats detected");
+                return;
             }
-            else {
-                <h1>Toss up!</h1>
+           const damage2 = ((((((100 * 2 / 5) + 2) * 70 * spattack1 / 50) / spdefense2 )  + 2)  * 90 / 100);
+            setAttackFormula3(damage2);
+        };
+        const damageFormulaAttack4 = () => {
+            if (spattack2 === null || spdefense1 === null){
+                console.log("null stats detected");
+                return;
+            }
+           const damage3 = ((((((100 * 2 / 5) + 2) * 70 * spattack2 / 50) / spdefense1 )  + 2)  * 90 / 100);
+            setAttackFormula4(damage3);
+        };
+        const whosFirst = () => {
+            if (spe1 === null || spe2 === null){
+                console.log("null speeds detected");
+                return;
+            }
+           if (spe1 > spe2 ){
+                console.log("One is faster");
+            }
+            else if (spe2 > spe1 ){
+                console.log("Two is faster");
+            }
+            else if (spe1 === spe2){
+                console.log("Same pokemon, simulator pointless")
             }
         };
+
   return (
 
       <>
@@ -161,6 +270,7 @@ export default function Battle({ items = [], onSelect }) {
                       <button className="btn btn-primary" onClick={onSearch2}>Search</button>
                       
                      </div>
+                     
                           {searchResult2 && searchResult &&(
                         <div className="d-flex align-items-center" style={{width: "10%", margin: "1rem auto", gap: '0.5rem'}}>
  
@@ -169,8 +279,9 @@ export default function Battle({ items = [], onSelect }) {
                                 
                             
                                 <button className="btn btn-primary" onClick={fight}>FIGHT!</button>
+                                <h6>please click 3 times</h6>
                                 
-                                
+                               
                                 
                                 
                             </div>
@@ -185,7 +296,12 @@ export default function Battle({ items = [], onSelect }) {
                             <div> 
                             
                                 
-                                <h3>Hp: {searchResult.hitpoints} </h3>
+                                <h3>Hp: {hp1} </h3>
+                                <div className='health-bar-container1'style={{width :`${hp1/3}%`}}>
+                                    <div className='health-fill1' >
+
+                                    </div>
+                                </div>
                                 
                                 
                             </div>
@@ -200,7 +316,12 @@ export default function Battle({ items = [], onSelect }) {
                             
                                 
                                 
-                                <h3>Hp: {searchResult2.hitpoints} </h3>
+                                <h3>Hp: {hp2} </h3>
+                                <div className='health-bar-container2'style={{width :`${hp2/3}%`}}>
+                                    <div className='health-fill2' >
+
+                                    </div>
+                                </div>
                                 
                                 
                             </div>

@@ -1,1 +1,36 @@
-import './battle.css'
+.health-bar-container1 
+{
+width: 200px;
+height: 50px;
+background-color: rgb(255, 127, 127);
+border: 3px solid #080606;
+border-radius: 5px;
+overflow: hidden;
+transition: width 1s ease-in-out;
+}
+
+.health-fill1 
+{
+height: 100%;
+background-color: blue;
+transition: width 1s ease-in-out;
+}
+
+.health-bar-container2 
+{
+width: 200px;
+height: 50px;
+background-color: rgb(255, 127, 127);
+border: 3px solid #080606;
+border-radius: 5px;
+overflow: hidden;
+transition: width 1s ease-in-out;
+}
+
+.health-fill2
+{
+height: 100%;
+background-color: rgb(0, 255, 98);
+transition: width 1s ease-in-out;
+transition: width 1s ease-in-out;
+}
