@@ -5,6 +5,11 @@
   text-align: center;
   box-sizing: border-box;
   background-color: #B3A125;
+  font-family: "Doto", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 1000;
+  font-style: normal;
+  font-variation-settings: "ROND" 0;
 }
 
 

@@ -6,12 +6,15 @@ import './index.css'
 import App from './App.jsx'
 import NavBar from './NavBar.jsx'
 import {BrowserRouter as Router} from "react-router-dom";
+import { StorageProvider } from './StorageContext.jsx'
 
 createRoot(document.getElementById('root')).render(
     <>
-        <Router>
-            <NavBar />
-            <App />
-        </Router>
+        <StorageProvider>
+            <Router>
+                <NavBar />
+                <App />
+            </Router>
+        </StorageProvider>
     </>
 )

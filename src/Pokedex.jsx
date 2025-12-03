@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import IconNav from "./IconNav.jsx";
 import PokemonInfo from "./PokedexInfo.jsx";
+import {useStorage} from './StorageContext.jsx';
 
 export default function Pokedex({ items = [], onSelect }) {
     const bottomMenu = [
@@ -11,29 +12,19 @@ export default function Pokedex({ items = [], onSelect }) {
         { name: 'Battle Sim', image: 'src/battlesim.png', url: 'https://bulbapedia.bulbagarden.net/wiki/File:EmeraldBFLogo.png' },
         { name: 'Change Game', image: 'src/changegame.png', url: 'https://bulbapedia.bulbagarden.net/wiki/File:Pok%C3%A9mon_VG_logo.png' }
     ];
+    const { addToHistory } = useStorage();
     const location = useLocation();
     const navigate = useNavigate();
     const [searchResult, setSearchResult] = useState(null);
     const [selected, setSelected] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [saved, _setSaved] = useState(() => {
-        try {
-            const raw = localStorage.getItem('savedPokemon');
-            return raw ? JSON.parse(raw) : [];
-        } catch (err) {
-            console.log(err);
-            return [];
-        }
-    });
 
     const params = new URLSearchParams(location.search);
     const query = params.get('query') || '';
 
 
-    useEffect(() => {
-        localStorage.setItem('savedPokemon', JSON.stringify(saved));
-    }, [saved]);
+
     useEffect(() => {
 
         let mounted = true;
@@ -45,7 +36,7 @@ export default function Pokedex({ items = [], onSelect }) {
             }
             setLoading(true);
             setError(null);
-            setSearchResult(null);
+
             try {
                 const resp = await fetch(`https://pokeapi.co/api/v2/pokemon/${query.toLowerCase()}`);
                 if (!resp.ok){
@@ -65,7 +56,10 @@ export default function Pokedex({ items = [], onSelect }) {
                     weight: data.weight,
                     stats: data.stats?.map(s => ({ name: s.stat.name, value: s.base_stat })) || []
                 };
-                if (mounted) setSearchResult(payload);
+                if (mounted){
+                    setSearchResult(payload)
+                    addToHistory(payload);
+                };
             } catch (err) {
                 if (mounted) setError(err.message || 'Error fetching Pokémon');
             } finally {
@@ -74,7 +68,7 @@ export default function Pokedex({ items = [], onSelect }) {
         };
         fetchPokemon();
         return () => { mounted = false; };
-    }, [query, navigate]);
+    }, [query, navigate, addToHistory]);
 
     const handleSelect = async (p) => {
         let name;
@@ -108,6 +102,7 @@ export default function Pokedex({ items = [], onSelect }) {
                 weight: data.weight,
                 stats: data.stats?.map(s => ({name: s.stat.name, value: s.base_stat})) || []
             };
+            addToHistory && addToHistory(payload);
             setSelected(payload);
             if (onSelect) onSelect(payload);
         }catch(error){
@@ -132,20 +127,24 @@ export default function Pokedex({ items = [], onSelect }) {
             {loading && <div className="alert alert-info">Searching...</div>}
             {error && <div className="alert alert-danger">{error}</div>}
 
-            {(searchResult || selected) ? (
-                <PokemonInfo pokemon={selected ?? searchResult} onSelect={handleSelect} onClear={clearInfo} />
-                ) : null
-            }
+            {(selected || searchResult) ? (
+                <PokemonInfo
+                    pokemon={selected ?? searchResult}
+                    onSelect={(p) => { onSelect && onSelect(p); }}
+                    onClear={() => { if (selected) setSelected(null); }}
+                />
+            ) : null}
 
 
-            <div className="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 g-3" style={{ marginBottom: 80, backgroundColor: "#3B4CCA", justifyContent: "center", borderRadius: "12px", padding: "15px", boxShadow: "2px 5px 7px" }}>
+
+            <div className="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 g-3" style={{ marginBottom: 80, backgroundColor: "#3B4CCA", justifyContent: "center", borderRadius: "12px", padding: "5px", boxShadow: "2px 5px 7px" }}>
                 {items && items.length > 0 ? (
                     items.map((it) => (
                         <div className="col-12 col-sm-6 col-md-4 col-lg-3 mb-3" key={it.id}>
-                            <div className="card h-100" style={{minHeight: 260, minWidth: 200, boxShadow: "2px 5px 7px"}}>
+                            <div className="card h-100" style={{minHeight: 260, minWidth: "80%", margin: "auto", boxShadow: "2px 5px 7px", backgroundColor: "#B3A125"}}>
                                 <div className="text-center p-3">
                                     {it.image ? (
-                                        <img src={it.image} alt={it.name} className="img-fluid" style={{ maxHeight: 200, objectFit: 'contain' }} />
+                                        <img src={it.image} alt={it.name} className="img-fluid" style={{ maxHeight: 200, width: "80%",objectFit: 'contain' }} />
                                     ) : (
                                         <div style={{ height: 200 }} className="d-flex align-items-center justify-content-center text-muted">
                                             No image

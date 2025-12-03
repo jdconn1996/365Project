@@ -34,11 +34,11 @@ export default function Carousel({ items = [] }) {
            
             {slides.length > 1 && (
                 <>
-                    <button className="carousel-control-prev" type="button" data-bs-target={`#${carouselId}`} data-bs-slide="prev">
+                    <button className="carousel-control-prev" type="button" data-bs-target={`#${carouselId}`} data-bs-slide="prev" style={{width: "50px" }}>
                         <span className="carousel-control-prev-icon" aria-hidden="true"></span>
                         <span className="visually-hidden">Previous</span>
                     </button>
-                    <button className="carousel-control-next" type="button" data-bs-target={`#${carouselId}`} data-bs-slide="next">
+                    <button className="carousel-control-next" type="button" data-bs-target={`#${carouselId}`} data-bs-slide="next" style={{width: "50px" }}>
                         <span className="carousel-control-next-icon" aria-hidden="true"></span>
                         <span className="visually-hidden">Next</span>
                     </button>
