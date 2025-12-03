@@ -10,8 +10,8 @@ export default function Navbar() {
                 <div className="container-fluid">
                     <Link className="navbar-brand mb-0 h1" to="/" style={{color: "white"}}>PokeDex Lite</Link>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
-                            data-bs-target="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"/>0
+                            data-bs-target="#mainNavbar" aria-control="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                        <span className="navbar-toggler-icon"/>
                     </button>
                     <div className="collapse navbar-collapse" id="mainNavbar">
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0">

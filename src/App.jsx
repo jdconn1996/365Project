@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import MainCC from './maincc.jsx';
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate} from 'react-router-dom';
+import { useStorage } from "./StorageContext.jsx";
 import IconNav from "./IconNav.jsx";
 import Pokedex from './Pokedex.jsx';
 import Compare from './Compare.jsx';
@@ -12,10 +13,13 @@ import History from './History.jsx';
 import Favorites from './Favorites.jsx';
 import Four from './Four.jsx';
 
+
 const HomePage = ({suggestedItems, recentItems}) => {
     const navigate = useNavigate();
     const [term, setTerm] = useState("");
+    const { history = [] } = useStorage();
 
+    const recent = (history && history.length > 3) ? history : (recentItems ?? []);
 
 
   const bottomMenu = [
@@ -51,7 +55,7 @@ const HomePage = ({suggestedItems, recentItems}) => {
                   <Link className="btn btn-primary" to="/history">History</Link>
               </div>
 
-              <MainCC title="Recently Viewed" items={recentItems}/>
+              <MainCC title="Recently Viewed" items={recent}/>
               <MainCC title="Suggested Pokémon" items={suggestedItems}/>
               <IconNav items={bottomMenu}/>
           </div>
