@@ -8,9 +8,8 @@ import {useStorage} from './StorageContext.jsx';
 
 export default function Pokedex({ items = [], onSelect }) {
     const bottomMenu = [
-        { name: 'Compare', image: 'src/compare.png', url: 'https://bulbapedia.bulbagarden.net/wiki/File:JohtoSinnoh_BF.png' },
-        { name: 'Battle Sim', image: 'src/battlesim.png', url: 'https://bulbapedia.bulbagarden.net/wiki/File:EmeraldBFLogo.png' },
-        { name: 'Change Game', image: 'src/changegame.png', url: 'https://bulbapedia.bulbagarden.net/wiki/File:Pok%C3%A9mon_VG_logo.png' }
+        { name: 'Compare', image: 'src/compare.png', link: '/compare' },
+        { name: 'Battle Sim', image: 'src/battlesim.png', link: '/battle' },
     ];
     const { addToHistory } = useStorage();
     const location = useLocation();

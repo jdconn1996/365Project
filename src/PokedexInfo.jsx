@@ -30,7 +30,7 @@ export default function PokemonInfo({ pokemon, onSelect, onClear }) {
 
                         <p className="mb-1"><strong>Types:</strong> {types.length ? types.join(', ') : 'Unknown'}</p>
                         <p className="mb-1"><strong>Abilities:</strong> {abilities.length ? abilities.join(', ') : 'Unknown'}</p>
-                        <p className="mb-1"><strong>Height / Weight:</strong> {height ?? '-'} / {weight ?? '-'}</p>
+                        <p className="mb-1"><strong>Height / Weight:</strong> {height ?? '-'}cm / {weight ?? '-'}cm</p>
 
                         {stats.length > 0 && (
                             <div className="mb-2">

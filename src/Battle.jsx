@@ -314,7 +314,7 @@ export default function Battle({ items = [], onSelect }) {
   return (
 
       <>
-          <div className="container-fluid text-start" style={{width: "100%", height: "100vh"}}>
+          <div className="container-fluid text-start" style={{width: "100%", height: "100%"}}>
               <div className="container py-3">
                 <h2 className="mb-5">Battle</h2>
 

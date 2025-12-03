@@ -33,7 +33,7 @@ const HomePage = ({suggestedItems, recentItems}) => {
   return (
 
       <>
-          <div className="container-fluid text-start" style={{width: "100%"}}>
+          <div className="container-fluid text-start" style={{width: "100%", height: "100%"}}>
               <div>
 
                   <div className="d-flex align-items-center" style={{width: "60%", margin: "1rem auto", gap: '0.5rem'}}>
