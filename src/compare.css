@@ -1,0 +1,125 @@
+.bst-bar-container
+{
+width: 200px;
+height: 10px;
+background-color: rgb(255, 127, 127);
+border: 1px solid #080606;
+border-radius: 1px;
+overflow: hidden;
+transition: width 1s ease-in-out;
+}
+
+.bst-fill
+{
+height: 100%;
+background-color: rgb(255, 0, 221);
+transition: width 1s ease-in-out;
+}
+
+.hp-bar-container
+{
+width: 200px;
+height: 10px;
+background-color: rgb(255, 127, 127);
+border: 1px solid #080606;
+border-radius: 1px;
+overflow: hidden;
+transition: width 1s ease-in-out;
+}
+
+.hp-fill
+{
+height: 100%;
+background-color: rgb(0, 255, 34);
+transition: width 1s ease-in-out;
+}
+
+.at-bar-container
+{
+width: 200px;
+height: 10px;
+background-color: rgb(255, 127, 127);
+border: 1px solid #080606;
+border-radius: 1px;
+overflow: hidden;
+transition: width 1s ease-in-out;
+}
+
+.at-fill
+{
+height: 100%;
+background-color: rgb(255, 0, 0);
+transition: width 1s ease-in-out;
+}
+
+.df-bar-container
+{
+width: 200px;
+height: 10px;
+background-color: rgb(255, 127, 127);
+border: 1px solid #080606;
+border-radius: 1px;
+overflow: hidden;
+transition: width 1s ease-in-out;
+}
+
+.df-fill
+{
+height: 100%;
+background-color: rgb(25, 0, 255);
+transition: width 1s ease-in-out;
+}
+
+.speed-bar-container
+{
+width: 200px;
+height: 10px;
+background-color: rgb(255, 127, 127);
+border: 1px solid #080606;
+border-radius: 1px;
+overflow: hidden;
+transition: width 1s ease-in-out;
+}
+
+.speed-fill
+{
+height: 100%;
+background-color: rgb(0, 0, 0);
+transition: width 1s ease-in-out;
+}
+
+.speciala-bar-container
+{
+width: 200px;
+height: 10px;
+background-color: rgb(255, 127, 127);
+border: 1px solid #080606;
+border-radius: 1px;
+overflow: hidden;
+transition: width 1s ease-in-out;
+}
+
+.speciala-fill
+{
+height: 100%;
+background-color: rgb(248, 248, 248);
+transition: width 1s ease-in-out;
+}
+
+.speciald-bar-container
+{
+width: 200px;
+height: 10px;
+background-color: rgb(255, 127, 127);
+border: 1px solid #080606;
+border-radius: 1px;
+overflow: hidden;
+transition: width 1s ease-in-out;
+}
+
+.speciald-fill
+{
+height: 100%;
+background-color: rgb(0, 46, 11);
+transition: width 1s ease-in-out;
+}
