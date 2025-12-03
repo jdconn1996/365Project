@@ -23,7 +23,9 @@ export default function Battle({ items = [], onSelect }) {
     
     const [searchResult, setSearchResult] = useState(null);
     const [searchResult2, setSearchResult2] = useState(null);
-
+    const [fighting, setFighting] = useState(null);
+    const [hp1, sethp1] = useState(null);
+    const [hp2, sethp2] = useState(null);
     const [selected, setSelected] = useState(null);
     const [selected2, setSelected2] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -113,6 +115,20 @@ export default function Battle({ items = [], onSelect }) {
             if (query2) fetchPokemon(query2, searchResult2);
         }, [query, query2]);
 
+        const fight = (searchResult, searchResult2) => {
+            if (searchResult.attack>searchResult2.attack){
+                <h1>{searchResult.name}Wins!</h1>
+            }
+            else if (searchResult.attack < searchResult2.attack){
+                <h1>{searchResult2.name}Wins!</h1>
+            }
+            else if (searchResult.attack === searchResult2.attack){
+                <h1>Tie!</h1>
+            }
+            else {
+                <h1>Toss up!</h1>
+            }
+        };
   return (
 
       <>
@@ -145,67 +161,52 @@ export default function Battle({ items = [], onSelect }) {
                       <button className="btn btn-primary" onClick={onSearch2}>Search</button>
                       
                      </div>
-           
+                          {searchResult2 && searchResult &&(
+                        <div className="d-flex align-items-center" style={{width: "10%", margin: "1rem auto", gap: '0.5rem'}}>
+ 
+                            <div> 
+                            
+                                
+                            
+                                <button className="btn btn-primary" onClick={fight}>FIGHT!</button>
+                                
+                                
+                                
+                                
+                            </div>
+                        </div>
+                    )}
             {error && <div className="alert alert-danger">{error}</div>}
                  <div className='d-flex justify-content-around mt-4'>
                     {searchResult &&(
                         <div>
-                            <h4>{searchResult.name}</h4>
+                            <h4>{searchResult.name} Level 100</h4>
                             <img src={searchResult.image} alt={searchResult.name} />
                             <div> 
                             
-                                <h5>Stats:</h5>
-                                <h6> Base Stat Total: {searchResult.baseStatTotal} </h6>
-                                <h5>At Level 100:</h5>
-
-                                <h6>Hp is: {searchResult.hitpoints} </h6>
-                                <h6>Attack is: {searchResult.attack}</h6>
-                                <h6>Defense is: {searchResult.defense}</h6>
-                                <h6>Special Attack is: {searchResult.specialAttack} </h6>
-                                <h6>Special Defense is: {searchResult.specialDefense}</h6>
-                                <h6>Speed is: {searchResult.speed}</h6>
-                                <h6>Base Stats are:</h6>
                                 
-                                <ul>
-                                    {searchResult.stats.map((stat)  => (
-                                        <li key={stat.name}>
-                                            {stat.name.charAt(0).toUpperCase()+stat.name.slice(1)}: {stat.value}
-                                        </li>
-                            ))} 
-                                </ul>
+                                <h3>Hp: {searchResult.hitpoints} </h3>
+                                
                                 
                             </div>
                         </div>
                     )}
+                    
                     {searchResult2 &&(
                         <div>
-                            <h4>{searchResult2.name}</h4>
+                            <h4>{searchResult2.name} Level 100</h4>
                             <img src={searchResult2.image} alt={searchResult2.name} />
                             <div> 
                             
-                                <h5>Stats:</h5>
-                                <h6> Base Stat Total: {searchResult2.baseStatTotal} </h6>
-                                <h5>At Level 100:</h5>
                                 
-                                <h6>Hp is: {searchResult2.hitpoints} </h6>
-                                <h6>Attack is: {searchResult2.attack}</h6>
-                                <h6>Defense is: {searchResult2.defense}</h6>
-                                <h6>Special Attack is: {searchResult2.specialAttack} </h6>
-                                <h6>Special Defense is: {searchResult2.specialDefense}</h6>
-                                <h6>Speed is: {searchResult2.speed}</h6>
-                                <h6>Base Stats are:</h6>
                                 
-                                <ul>
-                                    {searchResult2.stats.map((stat)  => (
-                                        <li key={stat.name}>
-                                            {stat.name.charAt(0).toUpperCase()+stat.name.slice(1)}: {stat.value}
-                                        </li>
-                            ))} 
-                                </ul>
+                                <h3>Hp: {searchResult2.hitpoints} </h3>
+                                
                                 
                             </div>
                         </div>
                     )}
+                    
                  </div>
 
 
